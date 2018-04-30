@@ -1,0 +1,139 @@
+<!doctype html>
+<html ng-app="orderApp">
+<head>
+<!-- Standard Meta -->
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport"
+	content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+<!-- Site Properties -->
+<title>OrderシステムVer1.0</title>
+<link rel="shortcut icon" type="image/png" href="favicon.ico">
+<link rel="stylesheet" type="text/css" href="dist/semantic.min.css">
+
+<style type="text/css">
+body {
+	-webkit-text-size-adjust: 100%;
+	background-color: #FFFFFF;
+	height: 90%;
+}
+
+.card:hover {
+	background-color: #FFFFEE;
+	cursor: pointer;
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="dist/semantic.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="asserts/js/order.js"></script>
+
+</head>
+<body>
+	<div ng-controller="OrderListController as orderList" class="ui grid"
+		style="margin: 0 0 0 0">
+		<div class="eleven wide column" style="border: 1px solid #BBBBBB;">
+
+			<div class="row" ng-repeat="eachRow in orderList.goods">
+				<div class="ui three column grid">
+					<div class="column" ng-repeat="good in eachRow.row">
+
+						<div class="ui card" ng-click="orderList.order(good)">
+							<input type="hidden" id={{good.id}} value={{good.id}}>
+							<div class="image">
+								<img src={{good.img}}>
+							</div>
+							<div class="content center aligned">
+								<p class="header" style="margin: 3 0 0 0">{{good.text}}</p>
+								<p class="header right aligned" style="margin: -3 0 0 0">¥{{good.price}}</p>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="ui one column grid">
+					<div class="column">
+						<table class="ui striped table">
+							<thead>
+								<tr>
+									<th><div class="ui mini button">＜</div></th>
+									<th class="center aligned">1/3</th>
+									<th class="right aligned"><div class="ui mini button">＞</div></th>
+								</tr>
+							</thead>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="five wide column" style="border: 1px solid #BBBBBB;">
+			<div class="row" style="height: 80%">
+				<div class="ui top attached label"
+					style="text-align: center; font-size: 15">ご注文</div>
+
+				<div class="ui middle aligned divided fixed list">
+					<div class="item" ng-repeat="order in orderList.orders">
+						<img class="ui avatar image" src={{order.img}}>
+						<div class="content center aligned">
+							{{order.text}}
+							<div class="detail">¥{{order.price}}</div>
+						</div>
+						<div class="right floated content">
+							<div class="ui mini button" ng-click="orderList.sub(order.id)">-</div>
+							<label>{{order.amount}}</label>
+							<div class="ui mini button" ng-click="orderList.add(order.id)">+</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="ui one middle center aligned column grid">
+					<div class="column">
+						<div class="ui top attached label" style="font-size: 15">
+							商品{{orderList.goodsCount}}点
+							<div class="detail">合計金額：¥{{orderList.goodsTotalValue}}</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="row" style="margin-top: 25px">
+				<div class="ui one middle center aligned column grid">
+					<div class="column">
+						<button class="ui massive teal icon button"
+							style="background-color: #76D4E8"
+							ng-click="orderList.makeOrder()">
+
+							<i class="shop icon"></i> 注文確定
+
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="ui basic modal">
+		<div class="ui icon header">
+			<i class="archive icon"></i>{{orderList.message}}
+		</div>
+		<!-- <div class="content">
+			<p>Your inbox is getting full, would you like us to enable
+				automatic archiving of old messages?</p>
+		</div> -->
+		<div class="actions">
+			<div class="ui green basic cancel inverted button">
+				<i class="checkmark icon"></i> OK
+			</div>
+		</div>
+	    </div>
+	</div>
+</body>
+</html>

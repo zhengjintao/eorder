@@ -1,0 +1,148 @@
+<html ng-app="orderApp">
+<head>
+<!-- Standard Meta -->
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport"
+	content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+<!-- Site Properties -->
+<title>BWC考勤系统</title>
+<link rel="shortcut icon" type="image/png" href="favicon.ico">
+<link rel="stylesheet" type="text/css" href="dist/semantic.min.css">
+
+<style type="text/css">
+body {
+	-webkit-text-size-adjust: 100%;
+	background-color: #FFFFFF;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="asserts/js/order.js"></script>
+
+<script type="text/javascript">
+	
+</script>
+
+</head>
+<body>
+     <div class="ui grid" style="margin: -5 10 -10 -5">
+		<div class="eleven wide column" style="border: 1px solid #BBBBBB;" ng-controller="OrderListController as orderList">
+			<div class="row" ng-repear="orderRow in orderList.orders">
+				<div class="ui three column grid">
+					<div class="column" ng-repear="orderCol in orderRow">
+						<div class="ui card" style="height: 30%">
+							<div class="image">
+								<img src="asserts/images/lunch6.jpeg">
+							</div>
+							<div class="content center aligned">
+								<a class="header">{{orderCol.name}}</a> <a class="header right aligned">$199</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row" style="margin: 10 0 -5 0">
+				<table class="ui striped table">
+					<thead>
+						<tr>
+							<th><div class="ui mini button">＜</div></th>
+							<th class="center aligned">1/3</th>
+							<th class="right aligned"><div class="ui mini button">＞</div></th>
+						</tr>
+					</thead>
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+
+		<div class="five wide column" style="border: 1px solid #BBBBBB;">
+			<div class="row" style="height: 80%">
+				<div class="ui top attached label"
+					style="text-align: center; font-size: 15">ご注文</div>
+
+				<div class="ui middle aligned divided fixed list">
+					<div class="item">
+						<img class="ui avatar image" src="asserts/images/lunch.jpeg">
+						<div class="content center aligned">
+							わふサ
+							<div class="detail">$199</div>
+						</div>
+						<div class="right floated content">
+							<div class="ui mini button">-</div>
+							<label>1</label>
+							<div class="ui mini button">+</div>
+						</div>
+					</div>
+					<div class="item">
+
+						<img class="ui avatar image" src="asserts/images/lunch.jpeg">
+						<div class="content center aligned">
+							わふサ
+							<div class="detail">$199</div>
+						</div>
+						<div class="right floated content">
+							<div class="ui mini button">-</div>
+							<label>1</label>
+							<div class="ui mini button">+</div>
+						</div>
+					</div>
+					<div class="item">
+
+						<img class="ui avatar image" src="asserts/images/lunch.jpeg">
+						<div class="content center aligned">
+							わふサ
+							<div class="detail">$199</div>
+						</div>
+						<div class="right floated content">
+							<div class="ui mini button">-</div>
+							<label>9</label>
+							<div class="ui mini button">+</div>
+						</div>
+					</div>
+					<div class="item">
+						<img class="ui avatar image" src="asserts/images/lunch.jpeg">
+						<div class="content center aligned">
+							わふサ
+							<div class="detail">$199</div>
+						</div>
+						<div class="right floated content">
+
+							<div class="ui mini button">-</div>
+							<label>1</label>
+							<div class="ui mini button">+</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="ui one middle center aligned column grid">
+					<div class="column">
+						<div class="ui top attached label" style="font-size: 15">
+							商品2点
+							<div class="detail">合計金額：$199</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="row" style="margin-top: 25px">
+				<div class="ui one middle center aligned column grid">
+					<div class="column">
+						<button class="ui massive teal icon button"
+							style="background-color: #76D4E8" onclick="window.demo.javaMethod()">
+
+							<i class="shop icon"></i> 注文確定
+
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>
