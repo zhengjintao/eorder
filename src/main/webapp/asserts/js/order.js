@@ -17,27 +17,25 @@ var app = angular.module('orderApp',[]);
     
   app.controller('OrderListController', function($scope,$http,transFormFactory) {
     var orderList = this;
-    orderList.orders = [
-        {id:'00001', text:'learn AngularJS', img:'asserts/images/lunch.jpeg', price:'199',  amount:'1'},
-        {id:'00002', text:'build an AngularJS app', img:'asserts/images/lunch2.jpeg', price:'299', amount:'2'}];
+    orderList.orders = [];
     
     orderList.goods = [
     	{row:[
              {id:'00001', text:'learn AngularJS', img:'asserts/images/lunch.jpeg', price:'199'},
-             {id:'00002', text:'build an AngularJS app', img:'asserts/images/lunch.jpeg', price:'199'},
-             {id:'00003', text:'build an AngularJS app', img:'asserts/images/lunch.jpeg', price:'199'}
+             {id:'00002', text:'build an AngularJS', img:'asserts/images/lunch.jpeg', price:'199'},
+             {id:'00003', text:'build an AngularJS', img:'asserts/images/lunch.jpeg', price:'199'}
              ]
     	},
         {row:[
             {id:'00004', text:'learn AngularJS', img:'asserts/images/lunch6.jpeg', price:'299'},
-            {id:'00005', text:'build an AngularJS app', img:'asserts/images/lunch6.jpeg', price:'299'},
-            {id:'00006', text:'build an AngularJS app', img:'asserts/images/lunch6.jpeg', price:'299'}
+            {id:'00005', text:'build an AngularJS', img:'asserts/images/lunch6.jpeg', price:'299'},
+            {id:'00006', text:'build an AngularJS', img:'asserts/images/lunch6.jpeg', price:'299'}
             ]
         },
         {row:[
                 {id:'00007', text:'learn AngularJS', img:'asserts/images/lunch.jpeg', price:'199'},
-                {id:'00008', text:'build an AngularJS app', img:'asserts/images/lunch.jpeg', price:'199'},
-                {id:'00009', text:'build an AngularJS app', img:'asserts/images/lunch.jpeg', price:'199'}
+                {id:'00008', text:'build an AngularJS', img:'asserts/images/lunch.jpeg', price:'199'},
+                {id:'00009', text:'build an AngularJS', img:'asserts/images/lunch.jpeg', price:'199'}
              ]}
     ];
     
@@ -59,8 +57,7 @@ var app = angular.module('orderApp',[]);
         return total;
     };
     orderList.goodsCount = orderList.getGoodsCount();
-    
-    
+    orderList.visableLabel = orderList.goodsCount == 0;
     orderList.addTodo = function() {
     	orderList.todos.push({text:orderList.todoText, done:false});
     	orderList.todoText = '';
@@ -93,6 +90,7 @@ var app = angular.module('orderApp',[]);
         
         orderList.goodsTotalValue = orderList.getGoodsTotalValue();
         orderList.goodsCount = orderList.getGoodsCount();
+        orderList.visableLabel = orderList.goodsCount == 0;
     };
     
     orderList.sub = function(id) {
@@ -113,6 +111,7 @@ var app = angular.module('orderApp',[]);
         
         orderList.goodsTotalValue = orderList.getGoodsTotalValue();
         orderList.goodsCount = orderList.getGoodsCount();
+        orderList.visableLabel = orderList.goodsCount == 0;
     };
       
     orderList.add = function(id) {
@@ -134,6 +133,7 @@ var app = angular.module('orderApp',[]);
         
         orderList.goodsTotalValue = orderList.getGoodsTotalValue();
         orderList.goodsCount = orderList.getGoodsCount();
+        orderList.visableLabel = orderList.goodsCount == 0;
     };
     
     orderList.makeOrder = function() {
