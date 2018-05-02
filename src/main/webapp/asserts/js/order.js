@@ -18,26 +18,34 @@ var app = angular.module('orderApp',[]);
   app.controller('OrderListController', function($scope,$http,transFormFactory) {
     var orderList = this;
     orderList.orders = [];
-    
-    orderList.goods = [
+    orderList.goods =  [
     	{row:[
-             {id:'00001', text:'learn AngularJS', img:'asserts/images/lunch.jpeg', price:'199'},
-             {id:'00002', text:'build an AngularJS', img:'asserts/images/lunch.jpeg', price:'199'},
-             {id:'00003', text:'build an AngularJS', img:'asserts/images/lunch.jpeg', price:'199'}
-             ]
-    	},
-        {row:[
-            {id:'00004', text:'learn AngularJS', img:'asserts/images/lunch6.jpeg', price:'299'},
-            {id:'00005', text:'build an AngularJS', img:'asserts/images/lunch6.jpeg', price:'299'},
-            {id:'00006', text:'build an AngularJS', img:'asserts/images/lunch6.jpeg', price:'299'}
+            {id:'00001', text:'learn AngularJS', img:'asserts/images/lunch.jpeg', price:'199'},
+            {id:'00002', text:'build an AngularJS', img:'asserts/images/lunch.jpeg', price:'199'},
+            {id:'00003', text:'build an AngularJS', img:'asserts/images/lunch.jpeg', price:'199'}
             ]
-        },
-        {row:[
-                {id:'00007', text:'learn AngularJS', img:'asserts/images/lunch.jpeg', price:'199'},
-                {id:'00008', text:'build an AngularJS', img:'asserts/images/lunch.jpeg', price:'199'},
-                {id:'00009', text:'build an AngularJS', img:'asserts/images/lunch.jpeg', price:'199'}
-             ]}
-    ];
+   	}
+   ];
+    
+    (function(){
+    	
+    	$scope.url =  "makeorder.do";
+    	var postdata = {'mode':'init'};
+        $http(
+    		{
+    			method:"POST",
+    			url:$scope.url,
+    			data:postdata,
+    			transformRequest:transFormFactory.transForm,
+    			headers:{'Content-Type': 'application/x-www-form-urlencoded'}
+    		}).then(function (result) {
+    			orderList.goods = result.data;
+            }).catch(function (result) {
+            	orderList.message = "SORRY!エラーが発生しました。";
+            	$('.ui.basic.modal') .modal('show');
+            });
+        
+    })();
     
     orderList.getGoodsTotalValue = function() {
     	var total = 0;
@@ -140,7 +148,7 @@ var app = angular.module('orderApp',[]);
     	//window.demo.javaMethod();
     	
     	$scope.url =  "makeorder.do";
-    	var postdata = {'orders':JSON.stringify(orderList.orders)};
+    	var postdata = {'mode':'submit','orders':JSON.stringify(orderList.orders)};
         $http(
     		{
     			method:"POST",
