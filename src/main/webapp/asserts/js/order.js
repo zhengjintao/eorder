@@ -17,6 +17,8 @@ var app = angular.module('orderApp',[]);
     
   app.controller('OrderListController', function($scope,$http,transFormFactory) {
     var orderList = this;
+    orderList.currentPage = 1;
+    orderList.totalPages=3;
     orderList.orders = [];
     orderList.goods =  [
     	{row:[
@@ -30,7 +32,7 @@ var app = angular.module('orderApp',[]);
     (function(){
     	
     	$scope.url =  "makeorder.do";
-    	var postdata = {'mode':'init'};
+    	var postdata = {'mode':'init', 'pageIndex': '1'};
         $http(
     		{
     			method:"POST",
@@ -39,7 +41,9 @@ var app = angular.module('orderApp',[]);
     			transformRequest:transFormFactory.transForm,
     			headers:{'Content-Type': 'application/x-www-form-urlencoded'}
     		}).then(function (result) {
-    			orderList.goods = result.data;
+    			orderList.goods = result.data.goods;
+    			orderList.currentPage = result.data.currentPage;
+    			orderList.totalPages = result.data.totalPages;
             }).catch(function (result) {
             	orderList.message = "SORRY!エラーが発生しました。";
             	$('.ui.basic.modal') .modal('show');
@@ -173,5 +177,50 @@ var app = angular.module('orderApp',[]);
             	$('.ui.basic.modal') .modal('show');
             });
     	
+    }
+    
+    orderList.prev = function(currentPage) {
+    	if(currentPage== 1){
+    		return;
+    	}
+    	$scope.url =  "makeorder.do";
+    	var postdata = {'mode':'init', 'pageIndex': parseInt(currentPage)-1};
+        $http(
+    		{
+    			method:"POST",
+    			url:$scope.url,
+    			data:postdata,
+    			transformRequest:transFormFactory.transForm,
+    			headers:{'Content-Type': 'application/x-www-form-urlencoded'}
+    		}).then(function (result) {
+    			orderList.goods = result.data.goods;
+    			orderList.currentPage = result.data.currentPage;
+    			orderList.totalPages = result.data.totalPages;
+            }).catch(function (result) {
+            	orderList.message = "SORRY!エラーが発生しました。";
+            	$('.ui.basic.modal') .modal('show');
+            });
+    } 
+    orderList.next = function(currentPage) {
+    	if(currentPage== orderList.totalPages){
+    		return;
+    	}
+    	$scope.url =  "makeorder.do";
+    	var postdata = {'mode':'init', 'pageIndex': parseInt(currentPage)+1};
+        $http(
+    		{
+    			method:"POST",
+    			url:$scope.url,
+    			data:postdata,
+    			transformRequest:transFormFactory.transForm,
+    			headers:{'Content-Type': 'application/x-www-form-urlencoded'}
+    		}).then(function (result) {
+    			orderList.goods = result.data.goods;
+    			orderList.currentPage = result.data.currentPage;
+    			orderList.totalPages = result.data.totalPages;
+            }).catch(function (result) {
+            	orderList.message = "SORRY!エラーが発生しました。";
+            	$('.ui.basic.modal') .modal('show');
+            });
     }
   });
