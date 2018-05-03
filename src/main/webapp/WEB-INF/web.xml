@@ -4,14 +4,24 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-  <servlet>
-  	<servlet-name>MakeOrderServlet</servlet-name>
-  	<display-name>MakeOrderServlet</display-name>
+  <filter>
+  	<filter-name>EncodingFilter</filter-name>
+  	<display-name>EncodingFilter</display-name>
   	<description></description>
-  	<servlet-class>com.bwc.biz.order.MakeOrderServlet</servlet-class>
+  	<filter-class>com.bwc.biz.order.EncodingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>EncodingFilter</filter-name>
+  	<url-pattern>*.do</url-pattern>
+  </filter-mapping>
+  <servlet>
+  	<servlet-name>OrderServicServlet</servlet-name>
+  	<display-name>OrderServicServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.bwc.biz.order.OrderServicServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>MakeOrderServlet</servlet-name>
-  	<url-pattern>/makeorder.do</url-pattern>
+  	<servlet-name>OrderServicServlet</servlet-name>
+  	<url-pattern>/service.do</url-pattern>
   </servlet-mapping>
 </web-app>

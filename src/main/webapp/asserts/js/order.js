@@ -31,7 +31,7 @@ var app = angular.module('orderApp',[]);
     
     (function(){
     	
-    	$scope.url =  "makeorder.do";
+    	$scope.url =  "service.do";
     	var postdata = {'mode':'init', 'pageIndex': '1'};
         $http(
     		{
@@ -149,10 +149,15 @@ var app = angular.module('orderApp',[]);
     };
     
     orderList.makeOrder = function() {
+    	if(orderList.orders.length == 0){
+    		orderList.message = "FAILED!商品を一つ以上を選択してください。";
+        	$('.ui.basic.modal') .modal('show');
+        	return;
+    	}
     	//window.demo.javaMethod();
     	
-    	$scope.url =  "makeorder.do";
-    	var postdata = {'mode':'submit','orders':JSON.stringify(orderList.orders)};
+    	$scope.url =  "service.do";
+    	var postdata = {'mode':'order','orders':JSON.stringify(orderList.orders)};
         $http(
     		{
     			method:"POST",
@@ -183,7 +188,7 @@ var app = angular.module('orderApp',[]);
     	if(currentPage== 1){
     		return;
     	}
-    	$scope.url =  "makeorder.do";
+    	$scope.url =  "service.do";
     	var postdata = {'mode':'init', 'pageIndex': parseInt(currentPage)-1};
         $http(
     		{
@@ -205,7 +210,7 @@ var app = angular.module('orderApp',[]);
     	if(currentPage== orderList.totalPages){
     		return;
     	}
-    	$scope.url =  "makeorder.do";
+    	$scope.url =  "service.do";
     	var postdata = {'mode':'init', 'pageIndex': parseInt(currentPage)+1};
         $http(
     		{
@@ -213,7 +218,8 @@ var app = angular.module('orderApp',[]);
     			url:$scope.url,
     			data:postdata,
     			transformRequest:transFormFactory.transForm,
-    			headers:{'Content-Type': 'application/x-www-form-urlencoded'}
+    			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+    		    charset:"UTF_8"
     		}).then(function (result) {
     			orderList.goods = result.data.goods;
     			orderList.currentPage = result.data.currentPage;
