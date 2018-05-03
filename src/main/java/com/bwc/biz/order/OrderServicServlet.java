@@ -1,7 +1,13 @@
 package com.bwc.biz.order;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,6 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import sun.misc.BASE64Decoder;  
+import sun.misc.BASE64Encoder;  
 
 /**
  * Servlet implementation class MakeOrderServlet
@@ -348,6 +357,19 @@ public class OrderServicServlet extends HttpServlet {
 		String name = request.getParameter("name");
 		String price = request.getParameter("price");
 		String img = request.getParameter("img");
+		String imgtext = request.getParameter("imgtext").replace("data:image/png;base64,", "");
+		
+		BASE64Decoder decoder = new BASE64Decoder();  
+		//Base64解码  
+        byte[] b = decoder.decodeBuffer(imgtext);  
+        for(int i=0;i<b.length;++i)  
+        {  
+            if(b[i]<0)  
+            {//调整异常数据  
+                b[i]+=256;  
+            }  
+        }  
+            
 		String status = "0";
 		if (id == null || id.length() == 0) {
 			int maxid = 0;
@@ -356,13 +378,26 @@ public class OrderServicServlet extends HttpServlet {
 				maxid = maxid > goodid ? maxid : goodid;
 			}
 			
+			id = StringUtil.padLeft(String.valueOf(maxid + 1), 4, '0');
+			Date date = new Date();
+			 SimpleDateFormat sdf = new SimpleDateFormat("yyyymmddhhmmss");
+			String filename= "/"+id + sdf.format(date)+ ".png";
 			GoodInfo good = new GoodInfo();
-			good.setId(StringUtil.padLeft(String.valueOf(maxid + 1), 4, '0'));
+			good.setId(id);
 			good.setName(name);
 			good.setPrice(price);
-			good.setImgurl(img);
+			good.setImgurl("asserts/images" + filename);
 			good.setStatus("0");
 			goodslist.add(good);
+			
+			String filepath = this.getServletConfig().
+			        getServletContext().getRealPath("/asserts/images/"); 
+			
+			OutputStream out = new FileOutputStream(filepath + filename);      
+            out.write(b);  
+            out.flush();  
+            out.close();
+			
 			status = "1";
 		}else{
 			for (GoodInfo good : goodslist) {
@@ -371,11 +406,11 @@ public class OrderServicServlet extends HttpServlet {
 					good.setPrice(price);
 					good.setImgurl(img);
 					status = "2";
-					return;
+					break;
 				}
 			}
 		}
-
+		
 		JSONObject result = new JSONObject();
 		result.put("status", status);
 		

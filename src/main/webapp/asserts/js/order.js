@@ -29,7 +29,7 @@ var app = angular.module('orderApp',[]);
    	}
    ];
     
-    (function(){
+    function　init(){
     	
     	$scope.url =  "service.do";
     	var postdata = {'mode':'init', 'pageIndex': '1'};
@@ -46,10 +46,12 @@ var app = angular.module('orderApp',[]);
     			orderList.totalPages = result.data.totalPages;
             }).catch(function (result) {
             	orderList.message = "SORRY!エラーが発生しました。";
-            	$('.ui.basic.modal') .modal('show');
+            	$('#basemodal') .modal('show');
             });
         
-    })();
+    }
+    
+    init();
     
     orderList.getGoodsTotalValue = function() {
     	var total = 0;
@@ -151,7 +153,7 @@ var app = angular.module('orderApp',[]);
     orderList.makeOrder = function() {
     	if(orderList.orders.length == 0){
     		orderList.message = "FAILED!商品を一つ以上を選択してください。";
-        	$('.ui.basic.modal') .modal('show');
+        	$('#basemodal') .modal('show');
         	return;
     	}
     	//window.demo.javaMethod();
@@ -169,17 +171,17 @@ var app = angular.module('orderApp',[]);
                 $scope.content = result.data;
                 if(result.data.status=='OK'){
                 	orderList.message = "SUCCESS!ありがとうございました。";
-                	$('.ui.basic.modal') .modal('show');
+                	$('#basemodal') .modal('show');
                 	orderList.orders=[];
                 	orderList.goodsTotalValue = orderList.getGoodsTotalValue();
                     orderList.goodsCount = orderList.getGoodsCount();
                 }else{
                 	orderList.message = "SORRY!エラーが発生しました。";
-                	$('.ui.basic.modal') .modal('show');
+                	$('#basemodal') .modal('show');
                 }
             }).catch(function (result) {
             	orderList.message = "SORRY!エラーが発生しました。";
-            	$('.ui.basic.modal') .modal('show');
+            	$('#basemodal') .modal('show');
             });
     	
     }
@@ -203,7 +205,7 @@ var app = angular.module('orderApp',[]);
     			orderList.totalPages = result.data.totalPages;
             }).catch(function (result) {
             	orderList.message = "SORRY!エラーが発生しました。";
-            	$('.ui.basic.modal') .modal('show');
+            	$('#basemodal') .modal('show');
             });
     } 
     orderList.next = function(currentPage) {
@@ -226,7 +228,28 @@ var app = angular.module('orderApp',[]);
     			orderList.totalPages = result.data.totalPages;
             }).catch(function (result) {
             	orderList.message = "SORRY!エラーが発生しました。";
-            	$('.ui.basic.modal') .modal('show');
+            	$('#basemodal') .modal('show');
             });
     }
+    
+    ifvisible.setIdleDuration(30); // Page will become idle after {X} seconds
+    var flg=false;
+    
+    function dimmer(){
+    	// Stop auto updating the live data
+    	if(!flg){
+    		
+        	$('#welcomemodal') .modal('show');
+        	flg = true;
+    	}
+    }
+    ifvisible.on("idle", dimmer);
+
+    ifvisible.on("wakeup", function(){
+    	if(flg){
+    		flg = false;
+    		init();
+    		$('#welcomemodal') .modal('hide');
+    	}
+    });
   });
